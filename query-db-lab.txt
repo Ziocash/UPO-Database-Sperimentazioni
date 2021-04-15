@@ -1,0 +1,47 @@
+Query 1
+
+SELECT city.name, country.name FROM city JOIN country ON city.country = country.code
+ORDER BY city.name
+
+Query 2
+
+SELECT DISTINCT city FROM located
+WHERE river IS NOT NULL
+
+Query 3
+
+SELECT city.name, country.name FROM country JOIN city ON city.country = country.code
+WHERE city.name LIKE '%y%'
+ORDER BY country.name, city.name
+
+Query 4
+
+SELECT city.name, city.latitude FROM city
+WHERE latitude > 66 OR latitude < -66
+
+Query 5
+
+SELECT country.name FROM borders JOIN country ON country.code = country1 OR country2 = country.code
+WHERE (borders.country1 = 'I' OR borders.country2 = 'I') AND country.name <> 'Italy'
+
+Query 6.1 (con MAX)
+
+SELECT city.name, city.population
+FROM country JOIN city ON country.capital = city.name
+WHERE city.population = (SELECT MAX(city.population)
+FROM country JOIN city ON country.capital = city.name)
+
+Query 6.2 (senza MAX)
+
+SELECT city.name, city.population
+FROM country JOIN city ON country.capital = city.name
+WHERE city.population = (SELECT MIN(-1 * city.population)*-1
+FROM country JOIN city ON country.capital = city.name)
+
+Query 7
+
+SELECT city.name, city.population, SUM(lake.area) 
+FROM located JOIN city ON city.name = located.city 
+JOIN lake ON located.lake = lake.name
+WHERE city.country = 'USA'
+GROUP BY city.name, city.population
