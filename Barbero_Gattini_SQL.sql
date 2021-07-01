@@ -197,12 +197,26 @@ Per ogni città statunitense estrarre la sua popolazione e la superficie dei lag
 si affaccia (il risultato deve comprendere la città, la popolazione e l'area complessiva dei suoi laghi)
 (scrivere due versioni della query)
 
-1- Informazioni correlate: 
+1- Informazioni correlate: Nome della città, popolazione, somma dell'area dei laghi su cui si affaccia
 2- Proprietà delle informazioni: 
+    - city.name: character varying(50), non accetta valori NULL, parte della chiave primaria composta citykey
+    - city.population: numeric, accetta valori NULL
+    - city.country:  character varying(4), non accetta valori NULL
+    - lake.name: character varying(50), non accetta valori NULL, parte della chiave primaria lakekey
+    - lake.area: numeric, accetta valori NULL
+    - located.lake: character varying(50), accetta valori NULL
+    - located.city: character varying(50), accetta valori NULL
 3- Sottoproblemi:
+    - Selezionare tutte le città degli USA
+    - Trovare i laghi
+    - Calcolare la somma dell'area dei laghi nelle città
 4- Assunzioni:
+    - Si presuppone che tutte le città abbiano dati di popolazione non nulli
+    - Si presuppone che i dati inseriti siano corretti
 5- Viste:
+    - Nessuna vista utilizzata
 6- Controllo del risultato:
+    - Controllando il risultato appare Chicago che si affaccia sul Lago Michigan
 
 */
 
@@ -219,28 +233,38 @@ Per ogni città statunitense estrarre la sua popolazione e la superficie dei lag
 si affaccia (il risultato deve comprendere la città, la popolazione e l'area complessiva dei suoi laghi)
 (scrivere due versioni della query)
 
-1- Informazioni correlate: 
+1- Informazioni correlate: Nome della città, popolazione, somma dell'area dei laghi su cui si affaccia
 2- Proprietà delle informazioni: 
+    - city.name: character varying(50), non accetta valori NULL, parte della chiave primaria composta citykey
+    - city.population: numeric, accetta valori NULL
+    - city.country:  character varying(4), non accetta valori NULL
+    - lake.name: character varying(50), non accetta valori NULL, parte della chiave primaria lakekey
+    - lake.area: numeric, accetta valori NULL
+    - located.lake: character varying(50), accetta valori NULL
+    - located.city: character varying(50), accetta valori NULL
 3- Sottoproblemi:
+    - Selezionare tutte le città degli USA
+    - Trovare i laghi
+    - Calcolare la somma dell'area dei laghi nelle città
 4- Assunzioni:
+    - Si presuppone che tutte le città abbiano dati di popolazione non nulli
+    - Si presuppone che i dati inseriti siano corretti
 5- Viste:
+    - Nessuna vista utilizzata
 6- Controllo del risultato:
+    - Controllando il risultato appare Chicago che si affaccia sul Lago Michigan
 
 */
 
------
+SELECT city.name, city.population, SUM(lake.area) 
+FROM located JOIN city ON city.name = located.city 
+JOIN lake ON located.lake = lake.name
+WHERE city.country = 'USA'
+GROUP BY city.name, city.population
 
 /*
 
 Query 8
-
-
-1- Informazioni correlate: 
-2- Proprietà delle informazioni: 
-3- Sottoproblemi:
-4- Assunzioni:
-5- Viste:
-6- Controllo del risultato:
 
 */
 
@@ -252,17 +276,3 @@ FROM geo_island JOIN country ON country.code = geo_island.country JOIN island ON
 WHERE island.area = (SELECT MAX(island.area)FROM geo_island JOIN country ON country.code = geo_island.country JOIN island ON island.name = geo_island.island)
 ) AS temptable	
 ORDER BY temptable.area DESC
-
-/*
-
-Query <numero>:
-<testo>
-
-1- Informazioni correlate: 
-2- Proprietà delle informazioni: 
-3- Sottoproblemi:
-4- Assunzioni:
-5- Viste:
-6- Controllo del risultato:
-
-*/
